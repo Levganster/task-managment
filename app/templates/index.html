@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <h1>Список задач</h1>
+    {% if user %}
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createTaskModal">Добавить задачу</button>
+    {% else %}
+        <p>Пожалуйста, <a href="/login">войдите</a> или <a href="/register">зарегистрируйтесь</a>, чтобы управлять задачами.</p>
+    {% endif %}
+    
+    <div id="tasks-container">
+    </div>
+    
+    {% if user %}
+    <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form id="create-task-form">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="createTaskModalLabel">Добавить задачу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+              </div>
+              <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Название</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+{% endblock %}

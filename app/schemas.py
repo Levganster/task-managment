@@ -1,5 +1,17 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
+
+class UserBase(BaseModel):
+    username: str
+
+class User(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class UserCreate(UserBase):
+    password: str
 
 class TaskBase(BaseModel):
     title: str
@@ -10,27 +22,11 @@ class TaskCreate(TaskBase):
 
 class Task(TaskBase):
     id: int
-    owner_id: int
+    owner: UserBase
+    completed: bool
 
     class Config:
-        from_attributes = True
-
-class UserBase(BaseModel):
-    username: str
-
-class UserCreate(UserBase):
-    password: str
-
-class User(UserBase):
-    id: int
-    tasks: List[Task] = []
-
-    class Config:
-        from_attributes = True
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+        orm_mode = True
 
 class TokenData(BaseModel):
     username: Optional[str] = None
