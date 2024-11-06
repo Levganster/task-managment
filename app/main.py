@@ -7,12 +7,9 @@ from .routers import tasks_router
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from dotenv import load_dotenv
-import os
 from datetime import timedelta
 from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError
-
-load_dotenv()
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -58,7 +55,7 @@ def register_form(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 @app.post("/register", response_class=HTMLResponse)
-def register_user(request: Request, form_data: schemas.UserCreate, db: Session = Depends(database.get_db)):
+def register_user(request: Request, form_data: schemas.UserCreate = Depends(schemas.UserCreate.as_form), db: Session = Depends(database.get_db)):
     db_user = auth.get_user(db, username=form_data.username)
     if db_user:
         return templates.TemplateResponse("register.html", {"request": request, "message": "Пользователь уже существует"})
